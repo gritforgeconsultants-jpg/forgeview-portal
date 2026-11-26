@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171a20">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'none'">
+  <title>Sign in | ForgeView</title>
+  <link rel="stylesheet" href="./access.css">
+  <link rel="icon" href="./forgeview.svg" type="image/svg+xml">
+  <script type="module" src="./access.js"></script>
+</head>
+<body>
+  <main class="entry">
+    <section class="panel" aria-labelledby="sign-in">
+      <div class="brand">
+        <img src="./forgeview.svg" width="51" height="51" alt="">
+        <div><div class="brand-title">ForgeView</div><div class="brand-company">GRITFORGE</div></div>
+      </div>
+      <h1 id="sign-in">Sign in</h1>
+      <p>Enter your ForgeView access code.</p>
+      <form id="access-form">
+        <label for="access-code">Access code</label>
+        <div class="field">
+          <input id="access-code" type="password" required autocomplete="current-password" autocapitalize="none"
+                 spellcheck="false" maxlength="100" dir="ltr">
+          <button class="visibility" id="show-code" type="button" aria-controls="access-code"
+                  aria-pressed="false" aria-label="Show access code">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="square" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <p id="access-status" class="status" role="status" hidden></p>
+        <button class="primary" id="unlock" type="submit">Sign in</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
