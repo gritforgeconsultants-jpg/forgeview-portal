@@ -1,0 +1,10 @@
+services:
+  - type: web
+    runtime: static
+    name: gritforge-forgeview
+    repo: https://github.com/gritforgeconsultants-jpg/forgeview-portal
+    branch: main
+    buildCommand: "true"
+    staticPublishPath: "."
+    domains:
+      - forgeview.gritforge.co
