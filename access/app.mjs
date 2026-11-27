@@ -27,7 +27,7 @@ const denied = () => json({ error: 'Sign in to ForgeView to continue.' }, 401);
 const missing = () => result('Page not found.', 404, { 'Content-Type': 'text/plain; charset=utf-8' });
 const redirect = location => result(null, 303, { Location: location });
 
-async function jsonBody(request) {
+export async function jsonBody(request) {
   if (!/^application\/json(?:\s*;|$)/i.test(request.headers.get('Content-Type') ?? '')) return null;
   if (+request.headers.get('Content-Length') > MAX_JSON || !request.body) return null;
   const reader = request.body.getReader();

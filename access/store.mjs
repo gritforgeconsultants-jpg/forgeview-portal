@@ -1,4 +1,8 @@
 const schema = [
+  `CREATE TABLE IF NOT EXISTS access_setup (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    sealed TEXT NOT NULL
+  )`,
   `CREATE TABLE IF NOT EXISTS guest_invites (
     id TEXT PRIMARY KEY,
     invite_hash TEXT NOT NULL UNIQUE,
@@ -62,6 +66,11 @@ export async function openAccessStore(options) {
   return {
     close: db.close,
     async check() { await query('SELECT 1'); },
+    async readSetup() { return (await query('SELECT sealed FROM access_setup WHERE id = 1'))[0]?.sealed ?? null; },
+    async writeSetupOnce(sealed) {
+      const rows = await query('INSERT INTO access_setup (id, sealed) VALUES (1, ?) ON CONFLICT (id) DO NOTHING RETURNING id', sealed);
+      return rows.length === 1;
+    },
     async createInvite({ id, hash, label, days, now, claimBy }) {
       const [row] = await query(`INSERT INTO guest_invites (id, invite_hash, label, days, created_at, claim_by)
         VALUES (?, ?, ?, ?, ?, ?) RETURNING ${inviteFields}`, id, hash, label, days, now, claimBy);

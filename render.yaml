@@ -14,10 +14,10 @@ services:
         fromDatabase:
           name: forgeview-guest-access
           property: connectionString
-      - key: FORGEVIEW_OWNER_SHA256
-        sync: false
-      - key: FORGEVIEW_BUNDLE_KEY
-        sync: false
+      - key: FORGEVIEW_SETUP_SHA256
+        value: beffc9fe1cae2e11c87588846bc5b965ee4de5cb93e7a8110785be9157fc1730
+      - key: FORGEVIEW_SETUP_SEAL
+        generateValue: true
 databases:
   - name: forgeview-guest-access
     plan: free

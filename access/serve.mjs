@@ -5,6 +5,7 @@ import { Readable } from 'node:stream';
 import { fileURLToPath } from 'node:url';
 import { accessAssets } from './assets.mjs';
 import { createAccessApp } from './app.mjs';
+import { hostedSetup } from './setup.mjs';
 import { openAccessStore } from './store.mjs';
 
 const hosted = process.env.RENDER === 'true' || process.env.NODE_ENV === 'production';
@@ -13,13 +14,21 @@ const origin = process.env.FORGEVIEW_ACCESS_ORIGIN ?? process.env.RENDER_EXTERNA
 if (hosted && (!origin.startsWith('https://') || !process.env.DATABASE_URL)) {
   throw new Error('Hosted guest access requires an HTTPS origin and a persistent PostgreSQL database.');
 }
-const assets = accessAssets({ source: !hosted, keyValue: process.env.FORGEVIEW_BUNDLE_KEY });
 const filename = process.env.FORGEVIEW_ACCESS_DB ?? fileURLToPath(new URL('../.preview/guest-access.sqlite', import.meta.url));
 if (!process.env.DATABASE_URL && filename !== ':memory:') await mkdir(dirname(filename), { recursive: true });
 const store = await openAccessStore({ databaseUrl: process.env.DATABASE_URL, filename });
-const app = createAccessApp({ store, assets, ownerDigest: process.env.FORGEVIEW_OWNER_SHA256, origin });
-const check = await assets.workspace('index.html', { role: 'owner', scope: 'owner', expiresAt: 0 });
-if (!check) throw new Error('Build the ForgeView workspace before starting guest access.');
+async function start({ ownerDigest, bundleKey }) {
+  const assets = accessAssets({ source: !hosted, keyValue: bundleKey });
+  const app = createAccessApp({ store, assets, ownerDigest, origin });
+  const check = await assets.workspace('index.html', { role: 'owner', scope: 'owner', expiresAt: 0 });
+  if (!check) throw new Error('Build the ForgeView workspace before starting guest access.');
+  return app;
+}
+const ownerDigest = process.env.FORGEVIEW_OWNER_SHA256;
+const bundleKey = process.env.FORGEVIEW_BUNDLE_KEY;
+const app = hosted && !ownerDigest && !bundleKey
+  ? await hostedSetup({ store, origin, digest: process.env.FORGEVIEW_SETUP_SHA256, seal: process.env.FORGEVIEW_SETUP_SEAL, start })
+  : await start({ ownerDigest, bundleKey });
 
 const server = createServer(async (incoming, outgoing) => {
   try {
