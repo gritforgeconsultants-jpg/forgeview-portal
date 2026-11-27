@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Guest access · ForgeView</title>
+  <link rel="icon" href="/forgeview.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/access.css">
+  <link rel="stylesheet" href="/guest.css">
+  <script type="module" src="/manager.js"></script>
+</head>
+<body>
+  <header class="owner-header">
+    <div class="brand">
+      <img src="/forgeview.svg" width="41" height="41" alt="">
+      <div><div class="brand-title">ForgeView</div><div class="brand-company">GRITFORGE</div></div>
+    </div>
+    <button class="secondary" id="sign-out" type="button">Sign out</button>
+  </header>
+  <main class="manager">
+    <header class="manager-heading">
+      <h1>Guest access</h1>
+      <p>Give someone access to open drawings and do their own manual takeoff.</p>
+    </header>
+    <section class="manager-panel" aria-labelledby="create-title">
+      <h2 id="create-title">Create an invite</h2>
+      <form id="create-invite" class="create-form">
+        <div>
+          <label for="invite-label">Guest or company name</label>
+          <input id="invite-label" placeholder="e.g. Site estimating team" maxlength="80" required>
+        </div>
+        <div>
+          <label for="invite-days">Access lasts</label>
+          <select id="invite-days">
+            <option value="1">1 day</option><option value="2">2 days</option><option value="3">3 days</option>
+            <option value="4">4 days</option><option value="5">5 days</option><option value="6">6 days</option>
+            <option value="7" selected>7 days</option>
+          </select>
+        </div>
+        <button id="create" class="primary" type="submit">Create invite</button>
+      </form>
+      <p class="status">Access starts when the guest first opens the workspace. They have 7 days to claim the invite.</p>
+      <div id="new-invite" class="new-invite" hidden>
+        <label for="invite-link" id="link-label">Guest link</label>
+        <div class="link-actions">
+          <input id="invite-link" spellcheck="false" readonly aria-describedby="link-help">
+          <button id="copy" class="primary" type="button">Copy invite link</button>
+        </div>
+        <p id="link-help" class="status">Copy this private link now. ForgeView shows it once.</p>
+      </div>
+      <p id="manager-status" class="status" role="status"></p>
+    </section>
+    <section class="manager-panel" aria-labelledby="invites-title">
+      <h2 id="invites-title">Invites</h2>
+      <p class="status" id="empty-list" role="status">Loading invites…</p>
+      <ul class="invite-list" id="invites" hidden></ul>
+    </section>
+  </main>
+</body>
+</html>
