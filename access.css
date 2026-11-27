@@ -109,3 +109,13 @@ button:disabled { cursor: default; opacity: .62; }
 .status.error { color: #ffaaa1; }
 .return { display: inline-grid; place-items: center; padding: 5px 13px; text-decoration: none; }
 @media (max-height: 440px) { .entry { align-items: start; } }
+
+.guest-management {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--accent);
+  font-size: .875rem;
+  font-weight: 650;
+  text-underline-offset: .2em;
+}
+.guest-management:hover { color: var(--focus); }
